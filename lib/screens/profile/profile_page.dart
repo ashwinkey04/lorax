@@ -1,21 +1,31 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:lorax/sign_in.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lorax/screens/login/login_page.dart';
+import 'package:lorax/screens/login/sign_in.dart';
 
-import 'login.dart';
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
 
-class LandingPage extends StatelessWidget {
+class _ProfilePageState extends State<ProfilePage> {
+  GlobalKey globalKey = new GlobalKey();
+
+  static String name = "Loading..";
+  static String email = "Loading...";
+  static String imageUrl = "https://avatars1.githubusercontent.com/u/48018942?v=4";
+
+  static FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Colors.blue[100], Colors.blue[400]],
-          ),
-        ),
-        child: Center(
+      appBar: AppBar(
+        title: Text("About profile"),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
@@ -61,7 +71,10 @@ class LandingPage extends StatelessWidget {
               RaisedButton(
                 onPressed: () {
                   signOutGoogle();
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) {return Login();}), ModalRoute.withName('/'));
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) {
+                        return LoginPage();
+                      }), ModalRoute.withName('/'));
                 },
                 color: Colors.deepPurple,
                 child: Padding(
@@ -74,11 +87,38 @@ class LandingPage extends StatelessWidget {
                 elevation: 5,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
-              )
+              ),
+              SizedBox(height: 30),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    checkUser();
+  }
+
+  checkUser() async {
+    if (await FirebaseAuth.instance.currentUser() != null) {
+      FirebaseUser firebaseUser = await _auth.currentUser();
+      setState(() {
+        name = firebaseUser.displayName;
+        email = firebaseUser.email;
+        imageUrl = firebaseUser.photoUrl;
+      });
+    }
+  }
+
+  void printToast(String toast) {
+    Fluttertoast.showToast(
+        msg: toast,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black26,
+        textColor: Colors.white,
+        fontSize: 16.0);
   }
 }
