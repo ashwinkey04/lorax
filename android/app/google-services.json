@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "113243399429",
+    "firebase_url": "https://project-tree-amfoss.firebaseio.com",
+    "project_id": "project-tree-amfoss",
+    "storage_bucket": "project-tree-amfoss.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113243399429:android:00510e9ee3b5ee1f90836c",
+        "android_client_info": {
+          "package_name": "org.amfoss.lorax"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113243399429-e8eb3aemf06r60rq4j35g2ls0bojqqm0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.amfoss.lorax",
+            "certificate_hash": "f536600d581c4cd6ae8a4c3542f509f816088675"
+          }
+        },
+        {
+          "client_id": "113243399429-8lmmm7fpjpolvat3t2sjk9ocvplf94vv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmENr_8mVCVbUBTr8RP5T3hMU2m6t3H4Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113243399429-8lmmm7fpjpolvat3t2sjk9ocvplf94vv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

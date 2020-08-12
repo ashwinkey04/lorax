@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>113243399429-uoomb97gf6tfqmv21fdfs1s8p7635ic3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.113243399429-uoomb97gf6tfqmv21fdfs1s8p7635ic3</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>113243399429-e8eb3aemf06r60rq4j35g2ls0bojqqm0.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDMKCrA0-Gd4sGGp3TBXBeTuJnHDem0h34</string>
+	<key>GCM_SENDER_ID</key>
+	<string>113243399429</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.amfoss.lorax</string>
+	<key>PROJECT_ID</key>
+	<string>project-tree-amfoss</string>
+	<key>STORAGE_BUCKET</key>
+	<string>project-tree-amfoss.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:113243399429:ios:78fc55c25a81972a90836c</string>
+	<key>DATABASE_URL</key>
+	<string>https://project-tree-amfoss.firebaseio.com</string>
+</dict>
+</plist>
