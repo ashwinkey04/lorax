@@ -5,6 +5,8 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="Flutter app to help growing trees and keep track of them">
 
+  <meta name="google-signin-client_id" content="113243399429-8lmmm7fpjpolvat3t2sjk9ocvplf94vv.apps.googleusercontent.com">
+
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -18,6 +20,26 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-app.js"></script>
+
+
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.14.3/firebase-analytics.js"></script>
+
+  <script>
+      var firebaseConfig = {
+        apiKey: "AIzaSyC0QZB1f7r5ak7tDgqWfTLvGhPqENeZPWY",
+        authDomain: "project-tree-amfoss.firebaseapp.com",
+        databaseURL: "https://project-tree-amfoss.firebaseio.com",
+        projectId: "project-tree-amfoss",
+        storageBucket: "project-tree-amfoss.appspot.com",
+        messagingSenderId: "113243399429",
+        appId: "1:113243399429:web:67741e7cc502e8aa90836c",
+        measurementId: "G-CZ90MVNPQD"
+      };
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+  </script>
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
