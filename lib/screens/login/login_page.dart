@@ -1,8 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
-import 'package:lorax/screens/login/sign_in.dart';
-import 'package:lorax/widgets/theme.dart';
+
 import 'package:lorax/screens/profile/profile_page.dart';
+import 'package:lorax/utils/firebase_sign_in.dart';
+import 'package:lorax/utils/network_util.dart';
+import 'package:lorax/utils/toast_util.dart';
+
+FirebaseLogin user = new FirebaseLogin();
 
 class LoginPage extends StatefulWidget {
   @override
@@ -10,8 +15,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String textValue = 'Hello World !';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,18 +67,21 @@ class _LoginPageState extends State<LoginPage> {
       child: OutlineButton(
         splashColor: Colors.grey,
         color: Colors.white,
-        onPressed: () {
-          signInWithGoogle().whenComplete(() async {
-            if (await FirebaseAuth.instance.currentUser() != null) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return ProfilePage();
-                  },
-                ),
-              );
-            }
-          });
+        onPressed: () async {
+          if (await isNetworkConnected()) {
+            user.signInWithGoogle().whenComplete(() async {
+              if (await FirebaseAuth.instance.currentUser() != null) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ProfilePage();
+                    },
+                  ),
+                );
+              }
+            });
+          } else
+            showToast('You are offline :(');
         },
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
         highlightElevation: 55,

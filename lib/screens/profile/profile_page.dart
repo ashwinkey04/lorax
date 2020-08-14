@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:lorax/screens/login/login_page.dart';
-import 'package:lorax/screens/login/sign_in.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("About profile"),
+        title: Text("Profile"),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -70,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 40),
               RaisedButton(
                 onPressed: () {
-                  signOutGoogle();
+                  user.signOutGoogle();
                   Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(builder: (context) {
                         return LoginPage();

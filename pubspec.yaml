@@ -31,6 +31,7 @@ dependencies:
   firebase_auth: ^0.16.1
   google_sign_in: ^4.5.1
   fluttertoast: ^7.0.2
+  connectivity: ^0.4.9
 
 
 dev_dependencies:
