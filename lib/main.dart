@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lorax/screens/home/home_page.dart';
 import 'package:lorax/screens/login/login_page.dart';
-import 'package:lorax/screens/profile/profile_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,12 +12,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Login',
+      title: 'Lorax',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: isLoggedIn() != null ? ProfilePage() : LoginPage(),
+      home: isLoggedIn() != null ? HomePage() : LoginPage(),
     );
   }
 
