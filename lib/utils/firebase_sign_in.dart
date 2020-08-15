@@ -40,12 +40,4 @@ class FirebaseLogin {
 
     print("User Sign Out");
   }
-
-  Future<bool> isLoggedIn() async {
-    this._user = await _auth.currentUser();
-    if (this._user == null) {
-      return false;
-    }
-    return true;
-  }
 }
