@@ -24,6 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),
+        automaticallyImplyLeading: true,
       ),
       body: Center(
         child: SingleChildScrollView(
