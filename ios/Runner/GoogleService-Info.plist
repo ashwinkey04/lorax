@@ -7,7 +7,7 @@
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.113243399429-uoomb97gf6tfqmv21fdfs1s8p7635ic3</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>113243399429-e8eb3aemf06r60rq4j35g2ls0bojqqm0.apps.googleusercontent.com</string>
+	<string>113243399429-ksa05uln6n7han8msl8a70l2r07ph1qf.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDMKCrA0-Gd4sGGp3TBXBeTuJnHDem0h34</string>
 	<key>GCM_SENDER_ID</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:113243399429:ios:78fc55c25a81972a90836c</string>
+	<string>1:113243399429:ios:21a87b37d91b9e5d90836c</string>
 	<key>DATABASE_URL</key>
 	<string>https://project-tree-amfoss.firebaseio.com</string>
 </dict>
