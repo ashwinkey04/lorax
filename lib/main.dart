@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lorax/screens/home/home_page.dart';
@@ -17,13 +19,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: isLoggedIn() != null ? HomePage() : LoginPage(),
+      home: isLoggedIn() == true ? HomePage() : LoginPage(),
     );
   }
 
   Future<bool> isLoggedIn() async {
-    var _user = await _auth.currentUser();
+    FirebaseUser _user = await _auth.currentUser();
     if (_user == null) {
+      log("SHSHSHS");
       return false;
     }
     return true;
