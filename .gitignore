@@ -38,6 +38,7 @@ generated_plugin_registrant.dart
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
+.gradle
 
 # iOS/XCode related
 **/ios/**/*.mode1v3
