@@ -43,6 +43,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   moor_generator: ^2.1.1
+  build_runner: 1.10.1
   flutter_launcher_icons: "^0.7.3"
 
 flutter_icons:

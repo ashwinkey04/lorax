@@ -29,6 +29,10 @@
 pubspec.lock
 .flutter-plugins-dependencies
 generated_plugin_registrant.dart
+.gradle
+gradle/
+gradlew.bat
+gradlew
 
 # Android related
 **/android/**/gradle-wrapper.jar
