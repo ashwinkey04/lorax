@@ -17,7 +17,7 @@ class Trees extends StatefulWidget {
 class _TreesState extends State<Trees> {
   @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceHeight = MediaQuery.of(context).size.height/1.3;
     TreesModel model;
     return ScopedModel<TreesModel>(
       model: model = TreesModel(),

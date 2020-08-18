@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lorax/animations/fade_animation.dart';
 import 'package:lorax/database/moor_database.dart';
 import 'package:lorax/models/tree.dart';
+import 'package:lorax/screens/tab_views/trees/edit_tree.dart';
 import 'tree_card.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -11,6 +13,7 @@ class TreeGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceHeight = MediaQuery.of(context).size.height/1.3;
     return ScopedModelDescendant<TreesModel>(
         builder: (context, child, model) {
       return GridView.count(
@@ -19,13 +22,39 @@ class TreeGridView extends StatelessWidget {
         children: list.map((medicine) {
           return InkWell(
             onTap: () {
-              // details screen
+              buildBottomSheet(deviceHeight, model, context, medicine);
             },
             child: buildLongPressDraggable(medicine, model),
           );
         }).toList(),
       );
     });
+  }
+
+  void buildBottomSheet(double height, TreesModel model, BuildContext context, TreesTableData medicine) async {
+    var treeId = await showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(45), topRight: Radius.circular(45))),
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return FadeAnimation(
+            .6,
+            EditTree(height, model.getDatabase(), model.notificationManager, medicine),
+          );
+        });
+
+    if (treeId != null) {
+      Fluttertoast.showToast(
+          msg: "The Tree was added!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Theme.of(context).accentColor,
+          textColor: Colors.white,
+          fontSize: 20.0);
+    }
   }
 
   LongPressDraggable<TreesTableData> buildLongPressDraggable(
