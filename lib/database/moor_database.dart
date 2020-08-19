@@ -9,7 +9,13 @@ class TreesTable extends Table {
   TextColumn get description => text()();
 }
 
-@UseMoor(tables: [TreesTable])
+class GardeningTable extends Table {
+  // autoincrement sets this to the primary key
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get description => text()();
+}
+
+@UseMoor(tables: [TreesTable, GardeningTable])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
       : super(FlutterQueryExecutor.inDatabaseFolder(
@@ -25,22 +31,6 @@ class AppDatabase extends _$AppDatabase {
       update(treesTable).replace(medicine);
   Future deleteTree(TreesTableData medicine) =>
       delete(treesTable).delete(medicine);
-}
-
-class GardeningTable extends Table {
-  // autoincrement sets this to the primary key
-  IntColumn get id => integer().autoIncrement()();
-  TextColumn get description => text()();
-}
-
-@UseMoor(tables: [GardeningTable])
-class GardeningDatabase extends _$GardeningDatabase {
-  GardeningDatabase()
-      : super(FlutterQueryExecutor.inDatabaseFolder(
-      path: 'db.sqlite', logStatements: true));
-
-  @override
-  int get schemaVersion => 1;
 
   Future<List<GardeningTableData>> getAllGardening() =>
       select(gardeningTable).get();

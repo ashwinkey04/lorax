@@ -248,16 +248,6 @@ class $TreesTableTable extends TreesTable
   }
 }
 
-abstract class _$AppDatabase extends GeneratedDatabase {
-  _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  $TreesTableTable _treesTable;
-  $TreesTableTable get treesTable => _treesTable ??= $TreesTableTable(this);
-  @override
-  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
-  @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [treesTable];
-}
-
 class GardeningTableData extends DataClass
     implements Insertable<GardeningTableData> {
   final int id;
@@ -423,14 +413,16 @@ class $GardeningTableTable extends GardeningTable
   }
 }
 
-abstract class _$GardeningDatabase extends GeneratedDatabase {
-  _$GardeningDatabase(QueryExecutor e)
-      : super(SqlTypeSystem.defaultInstance, e);
+abstract class _$AppDatabase extends GeneratedDatabase {
+  _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  $TreesTableTable _treesTable;
+  $TreesTableTable get treesTable => _treesTable ??= $TreesTableTable(this);
   $GardeningTableTable _gardeningTable;
   $GardeningTableTable get gardeningTable =>
       _gardeningTable ??= $GardeningTableTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [gardeningTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [treesTable, gardeningTable];
 }

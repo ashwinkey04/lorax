@@ -5,7 +5,7 @@ import '../enums/icon_enum.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class GardeningModel extends Model with IconMixin {
-  final GardeningDatabase _database = GardeningDatabase();
+  final AppDatabase _database = AppDatabase();
   final NotificationManager notificationManager = NotificationManager();
   GardeningModel();
 
@@ -13,7 +13,7 @@ class GardeningModel extends Model with IconMixin {
     return await _database.getAllGardening();
   }
 
-  GardeningDatabase getDatabase() {
+  AppDatabase getDatabase() {
     return _database;
   }
 

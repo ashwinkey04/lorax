@@ -4,7 +4,7 @@ import 'package:lorax/notifications/NotificationManager.dart';
 
 class AddGarden extends StatefulWidget {
   final double height;
-  final GardeningDatabase _database;
+  final AppDatabase _database;
   final NotificationManager manager;
   AddGarden(this.height, this._database, this.manager);
 
