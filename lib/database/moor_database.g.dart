@@ -261,21 +261,16 @@ abstract class _$AppDatabase extends GeneratedDatabase {
 class GardeningTableData extends DataClass
     implements Insertable<GardeningTableData> {
   final int id;
-  final DateTime dueDate;
   final String description;
-  GardeningTableData(
-      {@required this.id, this.dueDate, @required this.description});
+  GardeningTableData({@required this.id, @required this.description});
   factory GardeningTableData.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
-    final dateTimeType = db.typeSystem.forDartType<DateTime>();
     final stringType = db.typeSystem.forDartType<String>();
     return GardeningTableData(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      dueDate: dateTimeType
-          .mapFromDatabaseResponse(data['${effectivePrefix}due_date']),
       description: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
     );
@@ -285,7 +280,6 @@ class GardeningTableData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return GardeningTableData(
       id: serializer.fromJson<int>(json['id']),
-      dueDate: serializer.fromJson<DateTime>(json['dueDate']),
       description: serializer.fromJson<String>(json['description']),
     );
   }
@@ -294,7 +288,6 @@ class GardeningTableData extends DataClass
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'dueDate': serializer.toJson<DateTime>(dueDate),
       'description': serializer.toJson<String>(description),
     };
   }
@@ -303,62 +296,50 @@ class GardeningTableData extends DataClass
   GardeningTableCompanion createCompanion(bool nullToAbsent) {
     return GardeningTableCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      dueDate: dueDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(dueDate),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
     );
   }
 
-  GardeningTableData copyWith({int id, DateTime dueDate, String description}) =>
+  GardeningTableData copyWith({int id, String description}) =>
       GardeningTableData(
         id: id ?? this.id,
-        dueDate: dueDate ?? this.dueDate,
         description: description ?? this.description,
       );
   @override
   String toString() {
     return (StringBuffer('GardeningTableData(')
           ..write('id: $id, ')
-          ..write('dueDate: $dueDate, ')
           ..write('description: $description')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      $mrjf($mrjc(id.hashCode, $mrjc(dueDate.hashCode, description.hashCode)));
+  int get hashCode => $mrjf($mrjc(id.hashCode, description.hashCode));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is GardeningTableData &&
           other.id == this.id &&
-          other.dueDate == this.dueDate &&
           other.description == this.description);
 }
 
 class GardeningTableCompanion extends UpdateCompanion<GardeningTableData> {
   final Value<int> id;
-  final Value<DateTime> dueDate;
   final Value<String> description;
   const GardeningTableCompanion({
     this.id = const Value.absent(),
-    this.dueDate = const Value.absent(),
     this.description = const Value.absent(),
   });
   GardeningTableCompanion.insert({
     this.id = const Value.absent(),
-    this.dueDate = const Value.absent(),
     @required String description,
   }) : description = Value(description);
-  GardeningTableCompanion copyWith(
-      {Value<int> id, Value<DateTime> dueDate, Value<String> description}) {
+  GardeningTableCompanion copyWith({Value<int> id, Value<String> description}) {
     return GardeningTableCompanion(
       id: id ?? this.id,
-      dueDate: dueDate ?? this.dueDate,
       description: description ?? this.description,
     );
   }
@@ -378,18 +359,6 @@ class $GardeningTableTable extends GardeningTable
         hasAutoIncrement: true, declaredAsPrimaryKey: true);
   }
 
-  final VerificationMeta _dueDateMeta = const VerificationMeta('dueDate');
-  GeneratedDateTimeColumn _dueDate;
-  @override
-  GeneratedDateTimeColumn get dueDate => _dueDate ??= _constructDueDate();
-  GeneratedDateTimeColumn _constructDueDate() {
-    return GeneratedDateTimeColumn(
-      'due_date',
-      $tableName,
-      true,
-    );
-  }
-
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   GeneratedTextColumn _description;
@@ -405,7 +374,7 @@ class $GardeningTableTable extends GardeningTable
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, dueDate, description];
+  List<GeneratedColumn> get $columns => [id, description];
   @override
   $GardeningTableTable get asDslTable => this;
   @override
@@ -418,10 +387,6 @@ class $GardeningTableTable extends GardeningTable
     final context = VerificationContext();
     if (d.id.present) {
       context.handle(_idMeta, id.isAcceptableValue(d.id.value, _idMeta));
-    }
-    if (d.dueDate.present) {
-      context.handle(_dueDateMeta,
-          dueDate.isAcceptableValue(d.dueDate.value, _dueDateMeta));
     }
     if (d.description.present) {
       context.handle(_descriptionMeta,
@@ -445,9 +410,6 @@ class $GardeningTableTable extends GardeningTable
     final map = <String, Variable>{};
     if (d.id.present) {
       map['id'] = Variable<int, IntType>(d.id.value);
-    }
-    if (d.dueDate.present) {
-      map['due_date'] = Variable<DateTime, DateTimeType>(d.dueDate.value);
     }
     if (d.description.present) {
       map['description'] = Variable<String, StringType>(d.description.value);

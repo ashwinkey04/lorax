@@ -30,7 +30,6 @@ class AppDatabase extends _$AppDatabase {
 class GardeningTable extends Table {
   // autoincrement sets this to the primary key
   IntColumn get id => integer().autoIncrement()();
-  DateTimeColumn get dueDate => dateTime().nullable()();
   TextColumn get description => text()();
 }
 
@@ -45,10 +44,10 @@ class GardeningDatabase extends _$GardeningDatabase {
 
   Future<List<GardeningTableData>> getAllGardening() =>
       select(gardeningTable).get();
-  Future insertTree(GardeningTableData garden) =>
+  Future insertGarden(GardeningTableData garden) =>
       into(gardeningTable).insert(garden);
-  Future updateTree(GardeningTableData garden) =>
+  Future updateGarden(GardeningTableData garden) =>
       update(gardeningTable).replace(garden);
-  Future deleteTree(GardeningTableData garden) =>
+  Future deleteGarden(GardeningTableData garden) =>
       delete(gardeningTable).delete(garden);
 }

@@ -58,7 +58,7 @@ class _DeleteIconState extends State<DeleteIcon> {
               model.notificationManager.removeReminder(medicine.id);
               // for debugging
               print("Tree deleted" + medicine.toString());
-              // show delete snakbar
+              // show delete snackbar
               Scaffold.of(context).showSnackBar(
                 SnackBar(
                   backgroundColor: Colors.red,

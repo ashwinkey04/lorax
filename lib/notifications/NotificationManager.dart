@@ -34,6 +34,15 @@ class NotificationManager {
     print(
         'Notification Succesfully Scheduled at ${time.hour.toString() + ":" + time.minute.toString()}');
   }
+// send gardening notification
+  void showGardenNotificationDaily(
+      int id, String body, int hour, int minute) async {
+    Time time = new Time(hour, minute, 0);
+    await flutterLocalNotificationsPlugin.showDailyAtTime(
+        id, body, time, getPlatformChannelSpecfics());
+    print(
+        'Notification Succesfully Scheduled at ${time.hour.toString() + ":" + time.minute.toString()}');
+  }
 
   getPlatformChannelSpecfics() {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
