@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:lorax/database/moor_database.dart';
 
 class GardeneingCard extends StatelessWidget {
@@ -9,25 +10,43 @@ class GardeneingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
+    double w = MediaQuery.of(context).size.width;
     return Container(
-      width: 180,
-      height: 180,
+      height: double.infinity,
+      width: double.infinity,
       color: color,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Row(
         children: <Widget>[
           Expanded(
-            child: Center(
+            child: Align(
+              alignment: Alignment.centerLeft,
               child: Text(
-                garden.description.toUpperCase(),
+                "         " + garden.description.toUpperCase(),
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: width * .034,
+                  fontSize: w * .034,
                   fontWeight: FontWeight.w400,
                 ),
               ),
             ),
+          ),
+          Expanded(
+            child: Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  children: <Widget>[
+                    Text("                           "),
+                    Icon(FlutterIcons.alarm_add_mdi),
+                    Text(
+                      "  " + garden.alarmTime + "   ",
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: w * .034,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                )),
           ),
         ],
       ),

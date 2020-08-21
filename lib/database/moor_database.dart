@@ -13,6 +13,7 @@ class GardeningTable extends Table {
   // autoincrement sets this to the primary key
   IntColumn get id => integer().autoIncrement()();
   TextColumn get description => text()();
+  TextColumn get alarmTime => text()();
 }
 
 @UseMoor(tables: [TreesTable, GardeningTable])

@@ -1,21 +1,24 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:lorax/database/moor_database.dart';
 import 'package:lorax/notifications/NotificationManager.dart';
 
-class AddGarden extends StatefulWidget {
+class EditGarden extends StatefulWidget {
   final double height;
   final AppDatabase _database;
   final NotificationManager manager;
-  AddGarden(this.height, this._database, this.manager);
+  final GardeningTableData medicine;
+  EditGarden(this.height, this._database, this.manager, this.medicine);
 
   @override
-  _AddGardenState createState() => _AddGardenState();
+  _EditGardenState createState() => _EditGardenState();
 }
 
-class _AddGardenState extends State<AddGarden> {
+class _EditGardenState extends State<EditGarden> {
   static final _formKey = new GlobalKey<FormState>();
   String _description;
-
+  var txtDesc = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class _AddGardenState extends State<AddGarden> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'Add New plant',
+                  'Edit Schedule Details',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w600,
@@ -55,6 +58,9 @@ class _AddGardenState extends State<AddGarden> {
             SizedBox(
               height: 15,
             ),
+            SizedBox(
+              height: 15,
+            ),
             Container(
               width: double.infinity,
               child: RaisedButton(
@@ -63,13 +69,13 @@ class _AddGardenState extends State<AddGarden> {
                   borderRadius: new BorderRadius.circular(30.0),
                 ),
                 onPressed: () {
-                  _submit(widget.manager);
+                  _submit(widget.manager, widget.medicine);
                 },
                 color: Theme.of(context).accentColor,
                 textColor: Colors.white,
                 highlightColor: Theme.of(context).primaryColor,
                 child: Text(
-                  'Add Plant'.toUpperCase(),
+                  'Save Changes'.toUpperCase(),
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -78,18 +84,18 @@ class _AddGardenState extends State<AddGarden> {
         ));
   }
 
-
   Form _buildForm() {
     TextStyle labelsStyle =
-    TextStyle(fontWeight: FontWeight.w400, fontSize: 25);
+        TextStyle(fontWeight: FontWeight.w400, fontSize: 25);
     return Form(
       key: _formKey,
       child: Column(
         children: <Widget>[
           TextFormField(
+            controller: txtDesc,
             style: TextStyle(fontSize: 25),
             decoration: InputDecoration(
-              labelText: 'Description',
+              labelText: widget.medicine.description,
               labelStyle: labelsStyle,
             ),
             validator: (input) => (input.length > 50) ? 'description is long' : null,
@@ -100,7 +106,7 @@ class _AddGardenState extends State<AddGarden> {
     );
   }
 
-  void _submit(NotificationManager manager) async {
+  void _submit(NotificationManager manager, GardeningTableData medicine) async {
     if (_formKey.currentState.validate()) {
       // form is validated
       _formKey.currentState.save();
@@ -114,19 +120,20 @@ class _AddGardenState extends State<AddGarden> {
         int minute = selectedTime.minute;
         print(selectedTime);
         // insert into database
-        var plantId = await widget._database.insertGarden(
+        await widget._database.updateGarden(
             GardeningTableData(
-                description: _description,
-                alarmTime: selectedTime.toString().substring(10, 15)
-                ));
-        // scehdule the notification
-        manager.showGardenNotificationDaily(plantId,_description, hour, minute);
-        // The Plant Id and Notitfaciton Id are the same
-        print('New Plant id' + plantId.toString());
+                id: medicine.id,
+                alarmTime: selectedTime.toString().substring(10, 15),
+                description: _description,));
+        // sehdule the notification
+        final gardenId = medicine.id;
+        manager.showGardenNotificationDaily(gardenId, _description, hour, minute);
+        // The garden Id and Notitfaciton Id are the same
+        print('New Garden id' + gardenId.toString());
+        print('New Garden id' + gardenId.toString());
         // go back
-        Navigator.pop(context, plantId);
+        Navigator.pop(context, gardenId);
       });
     }
   }
-
 }

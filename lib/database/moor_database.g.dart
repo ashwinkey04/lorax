@@ -252,7 +252,11 @@ class GardeningTableData extends DataClass
     implements Insertable<GardeningTableData> {
   final int id;
   final String description;
-  GardeningTableData({@required this.id, @required this.description});
+  final String alarmTime;
+  GardeningTableData(
+      {@required this.id,
+      @required this.description,
+      @required this.alarmTime});
   factory GardeningTableData.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -263,6 +267,8 @@ class GardeningTableData extends DataClass
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       description: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}description']),
+      alarmTime: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}alarm_time']),
     );
   }
   factory GardeningTableData.fromJson(Map<String, dynamic> json,
@@ -271,6 +277,7 @@ class GardeningTableData extends DataClass
     return GardeningTableData(
       id: serializer.fromJson<int>(json['id']),
       description: serializer.fromJson<String>(json['description']),
+      alarmTime: serializer.fromJson<String>(json['alarmTime']),
     );
   }
   @override
@@ -279,6 +286,7 @@ class GardeningTableData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'description': serializer.toJson<String>(description),
+      'alarmTime': serializer.toJson<String>(alarmTime),
     };
   }
 
@@ -289,48 +297,61 @@ class GardeningTableData extends DataClass
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
+      alarmTime: alarmTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(alarmTime),
     );
   }
 
-  GardeningTableData copyWith({int id, String description}) =>
+  GardeningTableData copyWith({int id, String description, String alarmTime}) =>
       GardeningTableData(
         id: id ?? this.id,
         description: description ?? this.description,
+        alarmTime: alarmTime ?? this.alarmTime,
       );
   @override
   String toString() {
     return (StringBuffer('GardeningTableData(')
           ..write('id: $id, ')
-          ..write('description: $description')
+          ..write('description: $description, ')
+          ..write('alarmTime: $alarmTime')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode, description.hashCode));
+  int get hashCode => $mrjf(
+      $mrjc(id.hashCode, $mrjc(description.hashCode, alarmTime.hashCode)));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is GardeningTableData &&
           other.id == this.id &&
-          other.description == this.description);
+          other.description == this.description &&
+          other.alarmTime == this.alarmTime);
 }
 
 class GardeningTableCompanion extends UpdateCompanion<GardeningTableData> {
   final Value<int> id;
   final Value<String> description;
+  final Value<String> alarmTime;
   const GardeningTableCompanion({
     this.id = const Value.absent(),
     this.description = const Value.absent(),
+    this.alarmTime = const Value.absent(),
   });
   GardeningTableCompanion.insert({
     this.id = const Value.absent(),
     @required String description,
-  }) : description = Value(description);
-  GardeningTableCompanion copyWith({Value<int> id, Value<String> description}) {
+    @required String alarmTime,
+  })  : description = Value(description),
+        alarmTime = Value(alarmTime);
+  GardeningTableCompanion copyWith(
+      {Value<int> id, Value<String> description, Value<String> alarmTime}) {
     return GardeningTableCompanion(
       id: id ?? this.id,
       description: description ?? this.description,
+      alarmTime: alarmTime ?? this.alarmTime,
     );
   }
 }
@@ -363,8 +384,20 @@ class $GardeningTableTable extends GardeningTable
     );
   }
 
+  final VerificationMeta _alarmTimeMeta = const VerificationMeta('alarmTime');
+  GeneratedTextColumn _alarmTime;
   @override
-  List<GeneratedColumn> get $columns => [id, description];
+  GeneratedTextColumn get alarmTime => _alarmTime ??= _constructAlarmTime();
+  GeneratedTextColumn _constructAlarmTime() {
+    return GeneratedTextColumn(
+      'alarm_time',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [id, description, alarmTime];
   @override
   $GardeningTableTable get asDslTable => this;
   @override
@@ -383,6 +416,12 @@ class $GardeningTableTable extends GardeningTable
           description.isAcceptableValue(d.description.value, _descriptionMeta));
     } else if (isInserting) {
       context.missing(_descriptionMeta);
+    }
+    if (d.alarmTime.present) {
+      context.handle(_alarmTimeMeta,
+          alarmTime.isAcceptableValue(d.alarmTime.value, _alarmTimeMeta));
+    } else if (isInserting) {
+      context.missing(_alarmTimeMeta);
     }
     return context;
   }
@@ -403,6 +442,9 @@ class $GardeningTableTable extends GardeningTable
     }
     if (d.description.present) {
       map['description'] = Variable<String, StringType>(d.description.value);
+    }
+    if (d.alarmTime.present) {
+      map['alarm_time'] = Variable<String, StringType>(d.alarmTime.value);
     }
     return map;
   }
