@@ -1,4 +1,6 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lorax/database/moor_database.dart';
 import 'package:lorax/notifications/NotificationManager.dart';
 
@@ -6,6 +8,7 @@ class AddTree extends StatefulWidget {
   final double height;
   final AppDatabase _database;
   final NotificationManager manager;
+
   AddTree(this.height, this._database, this.manager);
 
   @override
@@ -136,7 +139,8 @@ class _AddTreeState extends State<AddTree> {
               labelText: 'Description',
               labelStyle: labelsStyle,
             ),
-            validator: (input) => (input.length > 50) ? 'description is long' : null,
+            validator: (input) =>
+                (input.length > 50) ? 'description is long' : null,
             onSaved: (input) => _description = input,
           )
         ],
@@ -151,29 +155,34 @@ class _AddTreeState extends State<AddTree> {
       print(_name);
       print(_description);
       //show the time picker dialog
-      showTimePicker(
-        initialTime: TimeOfDay.now(),
-        context: context,
-      ).then((selectedTime) async {
-        int hour = selectedTime.hour;
-        int minute = selectedTime.minute;
-        print(selectedTime);
-        // insert into database
-        var treeId = await widget._database.insertTree(
-            TreesTableData(
-                name: _name,
-                description: _description,
-                image: 'assets/images/' + _icons[_selectedIndex]));
-        // sehdule the notification
-        manager.showNotificationDaily(treeId, _name, _description, hour, minute);
-        // The Tree Id and Notitfaciton Id are the same
-        print('New Tree id' + treeId.toString());
-        // go back
+      // insert into database
+      var treeId;
+      DatabaseReference ref = FirebaseDatabase.instance.reference();
+      int i = 0;
+      ref.child('trees').child("papaya").once().then((DataSnapshot snap) async {
+        var keys = snap.value.keys;
+        var data = snap.value;
+        for (var key in keys) {
+          i = i + 1;
+          treeId = await widget._database.insertTree(TreesTableData(
+              name: data[key]["title"],
+              description: data[key]["sub"],
+              image: 'assets/images/' + _icons[_selectedIndex]));
+          DateTime dateTime = DateTime.now();
+          dateTime = new DateTime(dateTime.year, dateTime.month,
+              dateTime.day + i, dateTime.hour, dateTime.minute);
+          print("count " + i.toString());
+
+          manager.showNotificationOnce(
+              treeId, data[key]["title"], data[key]["sub"], dateTime);
+          print('New Tree id' + treeId.toString());
+        }
         Navigator.pop(context, treeId);
       });
+
     }
   }
-
+  
   Widget _buildIcons(int index) {
     return GestureDetector(
       onTap: () {
@@ -193,6 +202,29 @@ class _AddTreeState extends State<AddTree> {
         ),
         child: Image.asset('assets/images/' + _icons[index]),
       ),
+    );
+  }
+}
+
+extension MyDateUtils on DateTime {
+  DateTime copyWith(
+      {int year,
+      int month,
+      int day,
+      int hour,
+      int minute,
+      int second,
+      int millisecond,
+      int microsecond}) {
+    return DateTime(
+      year ?? this.year,
+      month ?? this.month,
+      day ?? this.day,
+      hour ?? this.hour,
+      minute ?? this.minute,
+      second ?? this.second,
+      millisecond ?? this.millisecond,
+      microsecond ?? this.microsecond,
     );
   }
 }

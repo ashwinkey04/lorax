@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationManager {
-  var flutterLocalNotificationsPlugin;
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   NotificationManager() {
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
@@ -34,12 +35,17 @@ class NotificationManager {
     print(
         'Notification Succesfully Scheduled at ${time.hour.toString() + ":" + time.minute.toString()}');
   }
-// send gardening notification
-  void showGardenNotificationDaily(
-      int id, String body, int hour, int minute) async {
+
+  void showNotificationOnce(int id, String title, String body, DateTime time) async {
+    await flutterLocalNotificationsPlugin.schedule(id, title, body, time, getPlatformChannelSpecfics());
+
+    print('Notification Succesfully Scheduled at ${time.toIso8601String()}');
+  }
+
+  // send gardening notification
+  void showGardenNotificationDaily(int id, String body, int hour, int minute) async {
     Time time = new Time(hour, minute, 0);
-    await flutterLocalNotificationsPlugin.showDailyAtTime(
-        id, body, time, getPlatformChannelSpecfics());
+    await flutterLocalNotificationsPlugin.showDailyAtTime(id, null, body, time, getPlatformChannelSpecfics());
     print(
         'Notification Succesfully Scheduled at ${time.hour.toString() + ":" + time.minute.toString()}');
   }
