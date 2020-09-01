@@ -37,6 +37,7 @@ dependencies:
   moor_flutter: ^2.0.0
   simple_animations: ^1.3.4
   flutter_local_notifications: 1.4.4+3
+  http: ^0.12.2
 
 
 dev_dependencies:
