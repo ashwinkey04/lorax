@@ -4,6 +4,8 @@ import 'package:lorax/screens/tab_views/gardening.dart';
 import 'package:lorax/screens/tab_views/trees.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
+import '../plictionary.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -34,6 +36,23 @@ class _HomePageState extends State<HomePage> {
                 Icons.account_circle,
               ),
             ),
+            actions: <Widget>[
+              Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return Plictionary();
+                          },
+                        ),
+                      );
+                    },
+                    child: Icon(FlutterIcons.dictionary_mco),
+                  )
+              ),
+            ],
             bottom: TabBar(
               tabs: [
                 Tab(icon: Icon(FlutterIcons.tree_mco)),
