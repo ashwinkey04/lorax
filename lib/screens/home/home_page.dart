@@ -4,7 +4,7 @@ import 'package:lorax/screens/tab_views/gardening.dart';
 import 'package:lorax/screens/tab_views/trees.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 
-import '../plictionary.dart';
+import '../tree_dict/plictionary.dart';
 
 class HomePage extends StatefulWidget {
   @override
