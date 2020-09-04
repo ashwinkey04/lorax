@@ -19,6 +19,8 @@ class _Plictionary extends State<Plictionary> {
   List<Data> data;
   LinkData links;
   Meta meta;
+  var dataNull = true;
+  String sq = "";
 
   Future<String> getData(String query) async {
     FocusScope.of(context).unfocus();
@@ -40,6 +42,10 @@ class _Plictionary extends State<Plictionary> {
           : null;
       meta = parsed['meta'] != null ? new Meta.fromJson(parsed['meta']) : null;
 
+      setState(() {
+        dataNull = false;
+      });
+
       //print(meta.total);
       //print(data[0].author); Total number of responses is stored in meta.total
     } finally {
@@ -49,67 +55,94 @@ class _Plictionary extends State<Plictionary> {
   }
 
   @override
+  void setState(fn) {
+    super.setState(fn);
+  }
+
+  @override
   Widget build(BuildContext context) {
     TextEditingController _controller = TextEditingController();
     return new Scaffold(
       appBar: AppBar(
         title: Text("Plant Dictionary"),
       ),
-      body: Column(
-        children: [
-          new Center(
-            child: new Container(
-                padding: const EdgeInsets.all(30.0),
-                color: Colors.white,
-                child: new Container(
-                    child: new Center(
-                        child: new Column(children: [
-                  new Text(
-                    'Search for any plant',
-                    style: new TextStyle(fontSize: 25.0),
-                  ),
-                  new Padding(padding: EdgeInsets.only(top: 50.0)),
-                  new TextFormField(
-                    controller: _controller,
-                    decoration: new InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () async => {
-                          getData(_controller.text)
-                        },
-                        icon: Icon(FlutterIcons.search_mdi),
-                      ),
-                      labelText: "Enter Plant Name",
-                      fillColor: Colors.white,
-                      border: new OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(25.0),
-                        borderSide: new BorderSide(),
-                      ),
-                      //fillColor: Colors.green
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            new Center(
+              child: new Container(
+                  padding: const EdgeInsets.all(30.0),
+                  color: Colors.white,
+                  child: new Container(
+                      child: new Center(
+                          child: new Column(children: [
+                    new Text(
+                      'Search for any plant',
+                      style: new TextStyle(fontSize: 25.0),
                     ),
-                    keyboardType: TextInputType.text,
-                    style: new TextStyle(
-                      fontFamily: "Poppins",
+                    new Padding(padding: EdgeInsets.only(top: 50.0)),
+                    new TextFormField(
+                      controller: _controller,
+                      decoration: new InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () async => {
+                            setState(() {
+                              dataNull = true;
+                              sq = _controller.text;
+                            }),
+                            getData(_controller.text),
+                          },
+                          icon: Icon(FlutterIcons.search_mdi),
+                        ),
+                        labelText: "Enter Plant Name",
+                        fillColor: Colors.white,
+                        border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: new BorderSide(),
+                        ),
+                        //fillColor: Colors.green
+                      ),
+                      keyboardType: TextInputType.text,
+                      style: new TextStyle(
+                        fontFamily: "Poppins",
+                      ),
                     ),
-                  ),
-                ])))),
-          ),
-          setDict()
-        ],
+                  ])))),
+            ),
+            dataNull ? setDictNull() : setDict(),
+          ],
+        ),
       ),
     );
   }
 
-  Widget setDict(){
-    if(data==null)
-      return EmptyDict();
-    else
-      return ListView.builder(
-        itemCount: data.length,
-        itemBuilder: getCard,
-        padding: EdgeInsets.all(0.0),
-      );
+  Widget setDictNull() {
+    return EmptyDict();
   }
-  Widget getCard(BuildContext context, int index){
-    return new DictCard(data[index].scientificName, data[index].commonName, data[index].imageUrl);
+
+  Widget setDict() {
+    return Column(
+      children: [
+        SizedBox(height: 8),
+        Center(
+          child: new Text(
+            '$sq'.toUpperCase(),
+            style: new TextStyle(fontSize: 20.0),
+          ),
+        ),
+        ListView.builder(
+          primary: false,
+          itemCount: data.length,
+          shrinkWrap: true,
+          itemBuilder: getCard,
+          padding: EdgeInsets.all(0.0),
+        )
+      ],
+    );
+  }
+
+  Widget getCard(BuildContext context, int index) {
+    return new DictCard(data[index].scientificName, data[index].commonName,
+        data[index].imageUrl, data[index].genus, data[index].family);
   }
 }

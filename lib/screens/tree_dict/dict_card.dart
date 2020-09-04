@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 
 class DictCard extends StatelessWidget {
   final String imageURL;
-  final String commonName ;
-  final String scientificName ;
+  final String commonName;
+  final String scientificName;
+  final String genus;
+  final String family;
 
-  DictCard(this.scientificName,this.commonName,this.imageURL);
+  DictCard(this.scientificName,this.commonName,this.imageURL, this.genus, this.family);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class DictCard extends StatelessWidget {
             Container(
               width: MediaQuery.of(context).size.width/3,
               child: Image(
-                image: NetworkImage(imageURL),
+                image: imageURL != null ? NetworkImage(imageURL) : new AssetImage('assets/images/tree1.png'),
                 fit: BoxFit.fill,
               ),
             ),
@@ -33,18 +36,37 @@ class DictCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    commonName,
+                    commonName != null ? commonName : "",
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: 15,
                       color: Colors.black,
                       fontFamily: "Poppins",
                     ),
                   ),
                   Text(
-                    scientificName,
+                    scientificName != null ? scientificName : "",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 15,
+                      color: Colors.black54,
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Genus: $genus",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.black54,
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                  Text(
+                    "Family: $family",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
                       color: Colors.black54,
                       fontFamily: "Poppins",
                     ),
