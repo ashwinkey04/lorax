@@ -16,7 +16,16 @@ class GardeningTable extends Table {
   TextColumn get alarmTime => text()();
 }
 
-@UseMoor(tables: [TreesTable, GardeningTable])
+class NotifyTable extends Table {
+  // autoincrement sets this to the primary key
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get title => text().withLength(min: 5, max: 50)();
+  TextColumn get name => text().withLength(min: 5, max: 50)();
+  TextColumn get image => text()();
+  TextColumn get description => text()();
+}
+
+@UseMoor(tables: [TreesTable, GardeningTable, NotifyTable])
 class AppDatabase extends _$AppDatabase {
   AppDatabase()
       : super(FlutterQueryExecutor.inDatabaseFolder(
@@ -41,4 +50,12 @@ class AppDatabase extends _$AppDatabase {
       update(gardeningTable).replace(garden);
   Future deleteGarden(GardeningTableData garden) =>
       delete(gardeningTable).delete(garden);
+
+  Future<List<NotifyTableData>> getAllNotification() => select(notifyTable).get();
+  Future insertNotification(NotifyTableData garden) =>
+      into(notifyTable).insert(garden);
+  Future updateNotification(NotifyTableData garden) =>
+      update(notifyTable).replace(garden);
+  Future deleteNotification(NotifyTableData garden) =>
+      delete(notifyTable).delete(garden);
 }
