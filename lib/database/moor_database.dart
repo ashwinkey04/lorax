@@ -52,10 +52,10 @@ class AppDatabase extends _$AppDatabase {
       delete(gardeningTable).delete(garden);
 
   Future<List<NotifyTableData>> getAllNotification() => select(notifyTable).get();
-  Future insertNotification(NotifyTableData garden) =>
-      into(notifyTable).insert(garden);
-  Future updateNotification(NotifyTableData garden) =>
-      update(notifyTable).replace(garden);
-  Future deleteNotification(NotifyTableData garden) =>
-      delete(notifyTable).delete(garden);
+  Future insertNotification(NotifyTableData notify) =>
+      into(notifyTable).insert(notify);
+  Future updateNotification(NotifyTableData notify) =>
+      update(notifyTable).replace(notify);
+  Future deleteNotification(NotifyTableData notify) =>
+      delete(notifyTable).delete(notify);
 }

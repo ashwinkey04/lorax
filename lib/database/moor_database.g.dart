@@ -458,11 +458,13 @@ class $GardeningTableTable extends GardeningTable
 class NotifyTableData extends DataClass implements Insertable<NotifyTableData> {
   final int id;
   final String title;
+  final String name;
   final String image;
   final String description;
   NotifyTableData(
       {@required this.id,
       @required this.title,
+      @required this.name,
       @required this.image,
       @required this.description});
   factory NotifyTableData.fromData(
@@ -475,6 +477,7 @@ class NotifyTableData extends DataClass implements Insertable<NotifyTableData> {
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       title:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}title']),
+      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
       image:
           stringType.mapFromDatabaseResponse(data['${effectivePrefix}image']),
       description: stringType
@@ -487,6 +490,7 @@ class NotifyTableData extends DataClass implements Insertable<NotifyTableData> {
     return NotifyTableData(
       id: serializer.fromJson<int>(json['id']),
       title: serializer.fromJson<String>(json['title']),
+      name: serializer.fromJson<String>(json['name']),
       image: serializer.fromJson<String>(json['image']),
       description: serializer.fromJson<String>(json['description']),
     );
@@ -497,6 +501,7 @@ class NotifyTableData extends DataClass implements Insertable<NotifyTableData> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'title': serializer.toJson<String>(title),
+      'name': serializer.toJson<String>(name),
       'image': serializer.toJson<String>(image),
       'description': serializer.toJson<String>(description),
     };
@@ -508,6 +513,7 @@ class NotifyTableData extends DataClass implements Insertable<NotifyTableData> {
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
       title:
           title == null && nullToAbsent ? const Value.absent() : Value(title),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
       image:
           image == null && nullToAbsent ? const Value.absent() : Value(image),
       description: description == null && nullToAbsent
@@ -517,10 +523,15 @@ class NotifyTableData extends DataClass implements Insertable<NotifyTableData> {
   }
 
   NotifyTableData copyWith(
-          {int id, String title, String image, String description}) =>
+          {int id,
+          String title,
+          String name,
+          String image,
+          String description}) =>
       NotifyTableData(
         id: id ?? this.id,
         title: title ?? this.title,
+        name: name ?? this.name,
         image: image ?? this.image,
         description: description ?? this.description,
       );
@@ -529,6 +540,7 @@ class NotifyTableData extends DataClass implements Insertable<NotifyTableData> {
     return (StringBuffer('NotifyTableData(')
           ..write('id: $id, ')
           ..write('title: $title, ')
+          ..write('name: $name, ')
           ..write('image: $image, ')
           ..write('description: $description')
           ..write(')'))
@@ -536,14 +548,17 @@ class NotifyTableData extends DataClass implements Insertable<NotifyTableData> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(title.hashCode, $mrjc(image.hashCode, description.hashCode))));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(title.hashCode,
+          $mrjc(name.hashCode, $mrjc(image.hashCode, description.hashCode)))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
       (other is NotifyTableData &&
           other.id == this.id &&
           other.title == this.title &&
+          other.name == this.name &&
           other.image == this.image &&
           other.description == this.description);
 }
@@ -551,30 +566,36 @@ class NotifyTableData extends DataClass implements Insertable<NotifyTableData> {
 class NotifyTableCompanion extends UpdateCompanion<NotifyTableData> {
   final Value<int> id;
   final Value<String> title;
+  final Value<String> name;
   final Value<String> image;
   final Value<String> description;
   const NotifyTableCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
+    this.name = const Value.absent(),
     this.image = const Value.absent(),
     this.description = const Value.absent(),
   });
   NotifyTableCompanion.insert({
     this.id = const Value.absent(),
     @required String title,
+    @required String name,
     @required String image,
     @required String description,
   })  : title = Value(title),
+        name = Value(name),
         image = Value(image),
         description = Value(description);
   NotifyTableCompanion copyWith(
       {Value<int> id,
       Value<String> title,
+      Value<String> name,
       Value<String> image,
       Value<String> description}) {
     return NotifyTableCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
+      name: name ?? this.name,
       image: image ?? this.image,
       description: description ?? this.description,
     );
@@ -601,6 +622,15 @@ class $NotifyTableTable extends NotifyTable
   GeneratedTextColumn get title => _title ??= _constructTitle();
   GeneratedTextColumn _constructTitle() {
     return GeneratedTextColumn('title', $tableName, false,
+        minTextLength: 5, maxTextLength: 50);
+  }
+
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  GeneratedTextColumn _name;
+  @override
+  GeneratedTextColumn get name => _name ??= _constructName();
+  GeneratedTextColumn _constructName() {
+    return GeneratedTextColumn('name', $tableName, false,
         minTextLength: 5, maxTextLength: 50);
   }
 
@@ -631,7 +661,7 @@ class $NotifyTableTable extends NotifyTable
   }
 
   @override
-  List<GeneratedColumn> get $columns => [id, title, image, description];
+  List<GeneratedColumn> get $columns => [id, title, name, image, description];
   @override
   $NotifyTableTable get asDslTable => this;
   @override
@@ -650,6 +680,12 @@ class $NotifyTableTable extends NotifyTable
           _titleMeta, title.isAcceptableValue(d.title.value, _titleMeta));
     } else if (isInserting) {
       context.missing(_titleMeta);
+    }
+    if (d.name.present) {
+      context.handle(
+          _nameMeta, name.isAcceptableValue(d.name.value, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
     }
     if (d.image.present) {
       context.handle(
@@ -682,6 +718,9 @@ class $NotifyTableTable extends NotifyTable
     }
     if (d.title.present) {
       map['title'] = Variable<String, StringType>(d.title.value);
+    }
+    if (d.name.present) {
+      map['name'] = Variable<String, StringType>(d.name.value);
     }
     if (d.image.present) {
       map['image'] = Variable<String, StringType>(d.image.value);
