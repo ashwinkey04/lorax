@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+class MyAppBar extends StatelessWidget {
   const MyAppBar({
     Key key,
     @required this.greenColor,
@@ -22,7 +22,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             height: 25,
           ),
           Text(
-            'Gardening Reminder',
+            'Tree Reminder',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w600,
@@ -37,8 +37,4 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
     );
   }
-
-  @override
-  // TODO: implement preferredSize
-  Size get preferredSize => throw UnimplementedError();
 }

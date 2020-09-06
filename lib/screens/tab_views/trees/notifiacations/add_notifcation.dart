@@ -1,21 +1,20 @@
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:lorax/database/moor_database.dart';
 import 'package:lorax/notifications/NotificationManager.dart';
 
-class AddTree extends StatefulWidget {
+class AddNotification extends StatefulWidget {
   final double height;
   final AppDatabase _database;
   final NotificationManager manager;
 
-  AddTree(this.height, this._database, this.manager);
+  AddNotification(this.height, this._database, this.manager);
 
   @override
-  _AddTreeState createState() => _AddTreeState();
+  _AddNotificationState createState() => _AddNotificationState();
 }
 
-class _AddTreeState extends State<AddTree> {
+class _AddNotificationState extends State<AddNotification> {
   static final _formKey = new GlobalKey<FormState>();
   String _name;
   String _description;
@@ -42,7 +41,7 @@ class _AddTreeState extends State<AddTree> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'Add New Tree',
+                  'Add New Notification',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w600,
@@ -93,7 +92,7 @@ class _AddTreeState extends State<AddTree> {
                 textColor: Colors.white,
                 highlightColor: Theme.of(context).primaryColor,
                 child: Text(
-                  'Add Tree'.toUpperCase(),
+                  'Add Notification'.toUpperCase(),
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -155,40 +154,27 @@ class _AddTreeState extends State<AddTree> {
       print(_name);
       print(_description);
       //show the time picker dialog
-      // insert into database
-      var treeId, notificationId;
-      DatabaseReference ref = FirebaseDatabase.instance.reference();
-      int i = 0;
-      String treeName = "papaya";
-      treeId = await widget._database.insertTree(TreesTableData(
-          name: treeName,
-          description: "this is papaya tree",
-          image: 'assets/images/' + _icons[_selectedIndex]));
-      ref.child('trees').child(treeName).once().then((DataSnapshot snap) async {
-        var keys = snap.value.keys;
-        var data = snap.value;
-        for (var key in keys) {
-          i = i + 1;
-
-          notificationId = await widget._database.insertNotification(NotifyTableData(
-              title: data[key]["title"],
-              name: treeName,
-              description: data[key]["sub"],
-              image: 'assets/images/' + _icons[_selectedIndex]));
-
-
-          DateTime dateTime = DateTime.now();
-          dateTime = new DateTime(dateTime.year, dateTime.month,
-              dateTime.day + i, dateTime.hour, dateTime.minute);
-          print("count " + i.toString());
-
-          manager.showNotificationOnce(
-              notificationId, data[key]["title"], data[key]["sub"], dateTime);
-          print('New Tree id' + notificationId.toString());
-        }
-        Navigator.pop(context, treeId);
+      showTimePicker(
+        initialTime: TimeOfDay.now(),
+        context: context,
+      ).then((selectedTime) async {
+        int hour = selectedTime.hour;
+        int minute = selectedTime.minute;
+        print(selectedTime);
+        // insert into database
+        var notificationId = await widget._database.insertNotification(
+            NotifyTableData(
+                name: "Papaya",
+                title: _name,
+                description: _description,
+                image: 'assets/images/' + _icons[_selectedIndex]));
+        // sehdule the notification
+        manager.showNotificationDaily(notificationId, _name, _description, hour, minute);
+        // The Tree Id and Notitfaciton Id are the same
+        print('New Notification id' + notificationId.toString());
+        // go back
+        Navigator.pop(context, notificationId);
       });
-
     }
   }
   
