@@ -1,24 +1,26 @@
+import 'dart:developer';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:lorax/database/moor_database.dart';
 import 'package:lorax/notifications/NotificationManager.dart';
 
-class AddTree extends StatefulWidget {
+class EditNotification extends StatefulWidget {
   final double height;
   final AppDatabase _database;
   final NotificationManager manager;
-
-  AddTree(this.height, this._database, this.manager);
+  final NotifyTableData notification;
+  EditNotification(this.height, this._database, this.manager, this.notification);
 
   @override
-  _AddTreeState createState() => _AddTreeState();
+  _EditNotificationState createState() => _EditNotificationState();
 }
 
-class _AddTreeState extends State<AddTree> {
+class _EditNotificationState extends State<EditNotification> {
   static final _formKey = new GlobalKey<FormState>();
   String _name;
   String _description;
+  var txtName = TextEditingController();
+  var txtDesc = TextEditingController();
 
   int _selectedIndex = 0;
   List<String> _icons = [
@@ -42,7 +44,7 @@ class _AddTreeState extends State<AddTree> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  'Add New Tree',
+                  'Edit Notification Details',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w600,
@@ -87,13 +89,13 @@ class _AddTreeState extends State<AddTree> {
                   borderRadius: new BorderRadius.circular(30.0),
                 ),
                 onPressed: () {
-                  _submit(widget.manager);
+                  _submit(widget.manager, widget.notification);
                 },
                 color: Theme.of(context).accentColor,
                 textColor: Colors.white,
                 highlightColor: Theme.of(context).primaryColor,
                 child: Text(
-                  'Add Tree'.toUpperCase(),
+                  'Save Changes'.toUpperCase(),
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -125,22 +127,23 @@ class _AddTreeState extends State<AddTree> {
       child: Column(
         children: <Widget>[
           TextFormField(
+            controller: txtName,
             style: TextStyle(fontSize: 25),
             decoration: InputDecoration(
-              labelText: 'Name',
+              labelText: widget.notification.title,
               labelStyle: labelsStyle,
             ),
             validator: (input) => (input.length < 5) ? 'Name is short' : null,
             onSaved: (input) => _name = input,
           ),
           TextFormField(
+            controller: txtDesc,
             style: TextStyle(fontSize: 25),
             decoration: InputDecoration(
-              labelText: 'Description',
+              labelText: widget.notification.description,
               labelStyle: labelsStyle,
             ),
-            validator: (input) =>
-                (input.length > 50) ? 'description is long' : null,
+            validator: (input) => (input.length > 50) ? 'description is long' : null,
             onSaved: (input) => _description = input,
           )
         ],
@@ -148,50 +151,38 @@ class _AddTreeState extends State<AddTree> {
     );
   }
 
-  void _submit(NotificationManager manager) async {
+  void _submit(NotificationManager manager, NotifyTableData notification) async {
     if (_formKey.currentState.validate()) {
       // form is validated
       _formKey.currentState.save();
       print(_name);
       print(_description);
       //show the time picker dialog
-      // insert into database
-      var treeId, notificationId;
-      DatabaseReference ref = FirebaseDatabase.instance.reference();
-      int i = 0;
-      String treeName = "papaya";
-      treeId = await widget._database.insertTree(TreesTableData(
-          name: treeName,
-          description: "this is papaya tree",
-          image: 'assets/images/' + _icons[_selectedIndex]));
-      ref.child('trees').child(treeName).once().then((DataSnapshot snap) async {
-        var keys = snap.value.keys;
-        var data = snap.value;
-        for (var key in keys) {
-          i = i + 1;
-
-          notificationId = await widget._database.insertNotification(NotifyTableData(
-              title: data[key]["title"],
-              name: treeName,
-              description: data[key]["sub"],
-              image: 'assets/images/' + _icons[_selectedIndex]));
-
-
-          DateTime dateTime = DateTime.now();
-          dateTime = new DateTime(dateTime.year, dateTime.month,
-              dateTime.day + i, dateTime.hour, dateTime.minute);
-          print("count " + i.toString());
-
-          manager.showNotificationOnce(
-              notificationId, data[key]["title"], data[key]["sub"], dateTime);
-          print('New Tree id' + notificationId.toString());
-        }
-        Navigator.pop(context, treeId);
+      showTimePicker(
+        initialTime: TimeOfDay.now(),
+        context: context,
+      ).then((selectedTime) async {
+        int hour = selectedTime.hour;
+        int minute = selectedTime.minute;
+        print(selectedTime);
+        // insert into database
+        await widget._database.updateNotification(
+            NotifyTableData(
+                id: notification.id,
+                title: _name,
+                description: _description,
+                image: 'assets/images/' + _icons[_selectedIndex]));
+        // sehdule the notification
+        final notificationId = notification.id;
+        manager.showNotificationDaily(notificationId, _name, _description, hour, minute);
+        // The Tree Id and Notitfaciton Id are the same
+        print('New Notification id' + notificationId.toString());
+        // go back
+        Navigator.pop(context, notificationId);
       });
-
     }
   }
-  
+
   Widget _buildIcons(int index) {
     return GestureDetector(
       onTap: () {
@@ -211,29 +202,6 @@ class _AddTreeState extends State<AddTree> {
         ),
         child: Image.asset('assets/images/' + _icons[index]),
       ),
-    );
-  }
-}
-
-extension MyDateUtils on DateTime {
-  DateTime copyWith(
-      {int year,
-      int month,
-      int day,
-      int hour,
-      int minute,
-      int second,
-      int millisecond,
-      int microsecond}) {
-    return DateTime(
-      year ?? this.year,
-      month ?? this.month,
-      day ?? this.day,
-      hour ?? this.hour,
-      minute ?? this.minute,
-      second ?? this.second,
-      millisecond ?? this.millisecond,
-      microsecond ?? this.microsecond,
     );
   }
 }

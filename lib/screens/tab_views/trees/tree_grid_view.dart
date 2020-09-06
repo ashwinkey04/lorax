@@ -4,6 +4,7 @@ import 'package:lorax/animations/fade_animation.dart';
 import 'package:lorax/database/moor_database.dart';
 import 'package:lorax/models/tree.dart';
 import 'package:lorax/screens/tab_views/trees/edit_tree.dart';
+import 'package:lorax/screens/tab_views/trees/notifiacations/notification_view.dart';
 import 'tree_card.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -22,8 +23,8 @@ class TreeGridView extends StatelessWidget {
         children: list.map((medicine) {
           return InkWell(
             onTap: () {
-              buildBottomSheet(deviceHeight, model, context, medicine);
-            },
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => NotificationView()));            },
             child: buildLongPressDraggable(medicine, model),
           );
         }).toList(),
