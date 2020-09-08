@@ -20,7 +20,7 @@ class NotifyTable extends Table {
   // autoincrement sets this to the primary key
   IntColumn get id => integer().autoIncrement()();
   TextColumn get title => text().withLength(min: 5, max: 50)();
-  TextColumn get name => text().withLength(min: 5, max: 50)();
+  TextColumn get name => text().withLength(min: 1, max: 50)();
   TextColumn get image => text()();
   TextColumn get description => text()();
 }

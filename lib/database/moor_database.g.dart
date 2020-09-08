@@ -631,7 +631,7 @@ class $NotifyTableTable extends NotifyTable
   GeneratedTextColumn get name => _name ??= _constructName();
   GeneratedTextColumn _constructName() {
     return GeneratedTextColumn('name', $tableName, false,
-        minTextLength: 5, maxTextLength: 50);
+        minTextLength: 1, maxTextLength: 50);
   }
 
   final VerificationMeta _imageMeta = const VerificationMeta('image');

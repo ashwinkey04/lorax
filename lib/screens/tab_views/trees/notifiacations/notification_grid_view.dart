@@ -10,7 +10,8 @@ import 'notification_card.dart';
 
 class NotificationGridView extends StatelessWidget {
   final List<NotifyTableData> list;
-  NotificationGridView(this.list);
+  String treeId;
+  NotificationGridView(this.list, this.treeId);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +60,8 @@ class NotificationGridView extends StatelessWidget {
   }
 
   LongPressDraggable<NotifyTableData> buildLongPressDraggable(notification, NotificationModel model) {
-    if(notification.name == "papaya") {
+    print("this is the fuck"+ treeId);
+    if(notification.name == treeId) {
       return LongPressDraggable<NotifyTableData>(
         data: notification,
         onDragStarted: () {

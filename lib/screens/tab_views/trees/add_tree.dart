@@ -159,10 +159,10 @@ class _AddTreeState extends State<AddTree> {
       var treeId, notificationId;
       DatabaseReference ref = FirebaseDatabase.instance.reference();
       int i = 0;
-      String treeName = "papaya";
+      String treeName = _name;
       treeId = await widget._database.insertTree(TreesTableData(
           name: treeName,
-          description: "this is papaya tree",
+          description: _description,
           image: 'assets/images/' + _icons[_selectedIndex]));
       ref.child('trees').child(treeName).once().then((DataSnapshot snap) async {
         var keys = snap.value.keys;
@@ -172,7 +172,7 @@ class _AddTreeState extends State<AddTree> {
 
           notificationId = await widget._database.insertNotification(NotifyTableData(
               title: data[key]["title"],
-              name: treeName,
+              name: treeId.toString(),
               description: data[key]["sub"],
               image: 'assets/images/' + _icons[_selectedIndex]));
 

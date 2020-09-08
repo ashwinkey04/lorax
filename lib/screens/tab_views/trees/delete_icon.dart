@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lorax/animations/fade_animation.dart';
 import 'package:lorax/database/moor_database.dart';
+import 'package:lorax/models/notification.dart';
 import 'package:lorax/models/tree.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -51,11 +52,17 @@ class _DeleteIconState extends State<DeleteIcon> {
               });
               print('onLeave');
             },
-            onAccept: (medicine) {
+            onAccept: (medicine) async{
               // remove it from the database
               model.getDatabase().deleteTree(medicine);
-              //remove the medicine notifcation
-              model.notificationManager.removeReminder(medicine.id);
+              List<NotifyTableData> list = await NotificationModel().getMedicineList();
+              for(var i = 0; i<list.length;i++){
+                if(list[i].name == medicine.id.toString()){
+                  model.getDatabase().deleteNotification(list[i]);
+                  model.notificationManager.removeReminder(list[i].id);
+                  print("deleting this"+ list[i].id.toString());
+                }
+              }              //remove the medicine notifcation
               // for debugging
               print("Tree deleted" + medicine.toString());
               // show delete snackbar
@@ -72,5 +79,9 @@ class _DeleteIconState extends State<DeleteIcon> {
             },
           );
         }));
+  }
+
+  getList() async{
+
   }
 }

@@ -12,6 +12,9 @@ import 'notification_empty_state.dart';
 import 'notification_grid_view.dart';
 
 class NotificationView extends StatefulWidget {
+  String treeId;
+  NotificationView(this.treeId);
+
   @override
   _NotificationViewState createState() => _NotificationViewState();
 }
@@ -67,10 +70,9 @@ class _NotificationViewState extends State<NotificationView> {
         if (snapshot.hasData) {
           print(snapshot.data);
           if (snapshot.data.length == 0) {
-            // No data
             return Center(child: NotificationEmptyState());
           }
-          return NotificationGridView(snapshot.data);
+          return NotificationGridView(snapshot.data, widget.treeId);
         }
         return (Container());
       },
