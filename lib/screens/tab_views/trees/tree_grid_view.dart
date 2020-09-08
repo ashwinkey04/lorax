@@ -10,29 +10,33 @@ import 'package:scoped_model/scoped_model.dart';
 
 class TreeGridView extends StatelessWidget {
   final List<TreesTableData> list;
+
   TreeGridView(this.list);
 
   @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height/1.3;
-    return ScopedModelDescendant<TreesModel>(
-        builder: (context, child, model) {
+    final deviceHeight = MediaQuery.of(context).size.height / 1.3;
+    return ScopedModelDescendant<TreesModel>(builder: (context, child, model) {
       return GridView.count(
         crossAxisCount: 2,
         shrinkWrap: true,
-        children: list.map((medicine) {
+        children: list.map((tree) {
           return InkWell(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => NotificationView()));            },
-            child: buildLongPressDraggable(medicine, model),
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotificationView(tree.id.toString())));
+            },
+            child: buildLongPressDraggable(tree, model),
           );
         }).toList(),
       );
     });
   }
 
-  void buildBottomSheet(double height, TreesModel model, BuildContext context, TreesTableData medicine) async {
+  void buildBottomSheet(double height, TreesModel model, BuildContext context,
+      TreesTableData medicine) async {
     var treeId = await showModalBottomSheet(
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
