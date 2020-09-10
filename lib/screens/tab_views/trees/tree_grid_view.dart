@@ -4,7 +4,6 @@ import 'package:lorax/animations/fade_animation.dart';
 import 'package:lorax/database/moor_database.dart';
 import 'package:lorax/models/tree.dart';
 import 'package:lorax/screens/tab_views/trees/edit_tree.dart';
-import 'package:lorax/screens/tab_views/trees/notifiacations/notification_view.dart';
 import 'tree_card.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -15,7 +14,7 @@ class TreeGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height / 1.3;
+    final deviceHeight = MediaQuery.of(context).size.height / 1.2;
     return ScopedModelDescendant<TreesModel>(builder: (context, child, model) {
       return GridView.count(
         crossAxisCount: 2,
@@ -23,10 +22,7 @@ class TreeGridView extends StatelessWidget {
         children: list.map((tree) {
           return InkWell(
             onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => NotificationView(tree.id.toString())));
+              buildBottomSheet(deviceHeight, model, context, tree);
             },
             child: buildLongPressDraggable(tree, model),
           );
