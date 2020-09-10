@@ -1,10 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lorax/animations/fade_animation.dart';
-import 'package:lorax/database/moor_database.dart';
 import 'package:lorax/enums/icon_enum.dart';
-import 'package:lorax/models/notification.dart';
 import 'package:lorax/models/tree.dart';
 import 'package:lorax/screens/tab_views/trees/add_tree.dart';
 import 'package:lorax/screens/tab_views/trees/delete_icon.dart';
@@ -20,7 +17,7 @@ class Trees extends StatefulWidget {
 class _TreesState extends State<Trees> {
   @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height/1.3;
+    final deviceHeight = MediaQuery.of(context).size.height/1.2;
     TreesModel model;
     return ScopedModel<TreesModel>(
       model: model = TreesModel(),

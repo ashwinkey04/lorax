@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:lorax/database/moor_database.dart';
 import 'package:lorax/notifications/NotificationManager.dart';
@@ -35,10 +33,10 @@ class _EditTreeState extends State<EditTree> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.fromLTRB(25, 20, 25, 0),
-        height: widget.height * .8,
+        padding: EdgeInsets.fromLTRB(25, 30, 25, 0),
+        height: widget.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -157,29 +155,17 @@ class _EditTreeState extends State<EditTree> {
       _formKey.currentState.save();
       print(_name);
       print(_description);
-      //show the time picker dialog
-      showTimePicker(
-        initialTime: TimeOfDay.now(),
-        context: context,
-      ).then((selectedTime) async {
-        int hour = selectedTime.hour;
-        int minute = selectedTime.minute;
-        print(selectedTime);
-        // insert into database
         await widget._database.updateTree(
             TreesTableData(
                 id: medicine.id,
                 name: _name,
                 description: _description,
                 image: 'assets/images/' + _icons[_selectedIndex]));
-        // sehdule the notification
         final treeId = medicine.id;
-        manager.showNotificationDaily(treeId, _name, _description, hour, minute);
         // The Tree Id and Notitfaciton Id are the same
         print('New Tree id' + treeId.toString());
         // go back
         Navigator.pop(context, treeId);
-      });
     }
   }
 

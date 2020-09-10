@@ -1,4 +1,3 @@
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:lorax/database/moor_database.dart';
@@ -33,10 +32,10 @@ class _AddTreeState extends State<AddTree> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.fromLTRB(25, 20, 25, 0),
-        height: widget.height * .8,
+        padding: EdgeInsets.fromLTRB(25, 30, 25, 0),
+        height: widget.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -154,7 +153,6 @@ class _AddTreeState extends State<AddTree> {
       _formKey.currentState.save();
       print(_name);
       print(_description);
-      //show the time picker dialog
       // insert into database
       var treeId, notificationId;
       DatabaseReference ref = FirebaseDatabase.instance.reference();
