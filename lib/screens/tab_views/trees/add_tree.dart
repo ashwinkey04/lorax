@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:lorax/database/moor_database.dart';
 import 'package:lorax/notifications/NotificationManager.dart';
+import 'package:lorax/screens/tab_views/trees/tree_spinner.dart';
 
 class AddTree extends StatefulWidget {
   final double height;
@@ -117,26 +118,16 @@ class _AddTreeState extends State<AddTree> {
   }
 
   Form _buildForm() {
-    TextStyle labelsStyle =
-        TextStyle(fontWeight: FontWeight.w400, fontSize: 25);
     return Form(
       key: _formKey,
       child: Column(
         children: <Widget>[
-          TextFormField(
-            style: TextStyle(fontSize: 25),
-            decoration: InputDecoration(
-              labelText: 'Name',
-              labelStyle: labelsStyle,
-            ),
-            validator: (input) => (input.length < 5) ? 'Name is short' : null,
-            onSaved: (input) => _name = input,
-          ),
+          TreeSpinner(),
           TextFormField(
             style: TextStyle(fontSize: 25),
             decoration: InputDecoration(
               labelText: 'Description',
-              labelStyle: labelsStyle,
+              labelStyle: TextStyle(fontWeight: FontWeight.w400, fontSize: 25),
             ),
             validator: (input) =>
                 (input.length > 50) ? 'description is long' : null,
@@ -151,6 +142,7 @@ class _AddTreeState extends State<AddTree> {
     if (_formKey.currentState.validate()) {
       // form is validated
       _formKey.currentState.save();
+      _name = TreeSpinner.dropdownValue;
       print(_name);
       print(_description);
       // insert into database
