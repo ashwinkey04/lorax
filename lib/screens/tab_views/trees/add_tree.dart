@@ -8,8 +8,9 @@ class AddTree extends StatefulWidget {
   final double height;
   final AppDatabase _database;
   final NotificationManager manager;
+  final List<String> treeNamesList;
 
-  AddTree(this.height, this._database, this.manager);
+  AddTree(this.height, this._database, this.manager, this.treeNamesList);
 
   @override
   _AddTreeState createState() => _AddTreeState();
@@ -122,7 +123,7 @@ class _AddTreeState extends State<AddTree> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          TreeSpinner(),
+          TreeSpinner(widget.treeNamesList),
           TextFormField(
             style: TextStyle(fontSize: 25),
             decoration: InputDecoration(
