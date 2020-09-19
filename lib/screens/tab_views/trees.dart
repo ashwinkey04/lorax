@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lorax/animations/fade_animation.dart';
@@ -14,10 +15,34 @@ class Trees extends StatefulWidget {
   _TreesState createState() => _TreesState();
 }
 
+List<String> treeNamesList = [];
+
+Future<List<String>> _getTreeNames() async {
+  final ref = FirebaseDatabase.instance.reference().child("trees");
+  ref.once().then((DataSnapshot snapshot) {
+    Map<dynamic, dynamic> values = snapshot.value;
+    var keys = values.keys;
+    for (var key in keys) {
+      String tempTree = key.toString();
+      if (!(treeNamesList.contains(tempTree))) {
+        treeNamesList.add(tempTree);
+      }
+      print(treeNamesList);
+    }
+  });
+  return treeNamesList;
+}
+
 class _TreesState extends State<Trees> {
   @override
+  void initState() {
+    super.initState();
+    _getTreeNames();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height/1.2;
+    final deviceHeight = MediaQuery.of(context).size.height / 1.2;
     TreesModel model;
     return ScopedModel<TreesModel>(
       model: model = TreesModel(),
@@ -81,7 +106,8 @@ class _TreesState extends State<Trees> {
         builder: (context) {
           return FadeAnimation(
             .6,
-            AddTree(height, model.getDatabase(), model.notificationManager),
+            AddTree(height, model.getDatabase(), model.notificationManager,
+                treeNamesList),
           );
         });
 
